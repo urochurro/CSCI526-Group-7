@@ -94,12 +94,6 @@ public class PlayerController : MonoBehaviour
         isMoving = true;
         GridManager.I.RemoveOccupant(currentCell);
         int success = GridManager.I.SetOccupant(dest, gameObject);
-        if (success == 0)
-        {
-            GameManager.I.OnPlayerCaught();
-            isMoving = false;
-            yield break;
-        }
 
         Vector3 start = transform.position;
         Vector3 end = GridManager.I.CellToWorldCenter(dest);
@@ -113,8 +107,15 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         transform.position = end;
+        GridManager.I.RemoveOccupant(currentCell);
         currentCell = dest;
         isMoving = false;
+        if (success == 0)
+        {
+            GameManager.I.OnPlayerCaught();
+            isMoving = false;
+            yield break;
+        }
 
         // Check for collectible
         var occ = GridManager.I.GetOccupant(dest);
