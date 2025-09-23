@@ -93,7 +93,13 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = true;
         GridManager.I.RemoveOccupant(currentCell);
-        GridManager.I.SetOccupant(dest, gameObject);
+        int success = GridManager.I.SetOccupant(dest, gameObject);
+        if (success == 0)
+        {
+            GameManager.I.OnPlayerCaught();
+            isMoving = false;
+            yield break;
+        }
 
         Vector3 start = transform.position;
         Vector3 end = GridManager.I.CellToWorldCenter(dest);

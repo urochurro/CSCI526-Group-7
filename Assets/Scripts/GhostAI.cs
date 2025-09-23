@@ -139,18 +139,18 @@ public class GhostAI : MonoBehaviour
     private IEnumerator MoveToCell(Vector3Int dest)
     {
         // Check if player is in the destination before moving
-        GameObject occ = GridManager.I.GetOccupant(dest);
-        if (occ != null && occ.CompareTag("Player"))
-        {
-            GameManager.I.OnPlayerCaught();
-            // Optionally stop ghost movement
-            yield break;
-        }
+        //GameObject occ = GridManager.I.GetOccupant(dest);
+        // if (occ != null && occ.CompareTag("Player"))
+        // {
+        //     GameManager.I.OnPlayerCaught();
+        //     // Optionally stop ghost movement
+        //     yield break;
+        // }
 
         // Move ghost in grid
-        GridManager.I.RemoveOccupant(currentCell);
-        GridManager.I.SetOccupant(dest, gameObject);
-
+        //GridManager.I.RemoveOccupant(currentCell);
+        int success = GridManager.I.SetOccupant(dest, gameObject);
+        
         Vector3 start = transform.position;
         Vector3 end = GridManager.I.CellToWorldCenter(dest);
         float t = 0f;
@@ -165,6 +165,11 @@ public class GhostAI : MonoBehaviour
 
         transform.position = end;
         currentCell = dest;
+        if (success == 0)
+        {
+            GameManager.I.OnPlayerCaught();
+            yield break;
+        }
     }
 
 }

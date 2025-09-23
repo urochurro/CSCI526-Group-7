@@ -35,10 +35,14 @@ public class GridManager : MonoBehaviour
         return go;
     }
 
-    public void SetOccupant(Vector3Int cell, GameObject go)
+    public int SetOccupant(Vector3Int cell, GameObject go)
     {
-        if (go == null) { occupancy.Remove(cell); return; }
+        if (go == null) { occupancy.Remove(cell); return 1; }
+        if (occupancy.ContainsKey(cell)){
+            return 0;
+        }
         occupancy[cell] = go;
+        return 1;
     }
 
     public void RemoveOccupant(Vector3Int cell)

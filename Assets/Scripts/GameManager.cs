@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log("Game Over! Ghost caught the player!");
         // TODO: Show Lose UI
+        StopGame();
         StartCoroutine(RestartLevel());
     }
     #endregion
