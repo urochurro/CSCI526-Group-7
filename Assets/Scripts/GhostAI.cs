@@ -126,10 +126,10 @@ public class GhostAI : MonoBehaviour
             else
             {
                 state = State.Chase;
-                Debug.Log("Ghost is now " + state);
                 if (path.Count > 0)
                 {
                     Vector3Int next = path[0];
+                    Debug.Log("Ghost is now " + state + " and moving to " + next[0] + "," + next[1] + "," + next[2]);
                     yield return MoveToCell(next);
                 }
             }
@@ -149,6 +149,9 @@ public class GhostAI : MonoBehaviour
 
         // Move ghost in grid
         //GridManager.I.RemoveOccupant(currentCell);
+        if(enabled == false){
+            yield break;
+        }
         int success = GridManager.I.SetOccupant(dest, gameObject);
         
         Vector3 start = transform.position;
