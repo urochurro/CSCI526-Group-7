@@ -39,7 +39,12 @@ public class GridManager : MonoBehaviour
     {
         if (go == null) { occupancy.Remove(cell); return 1; }
         if (occupancy.ContainsKey(cell)){
-            return 0;
+            if (occupancy[cell].CompareTag("Ghost") && go.CompareTag("Player")){
+                return 0;
+            }
+            if (occupancy[cell].CompareTag("Player") && go.CompareTag("Ghost")){
+                return 0;
+            }
         }
         occupancy[cell] = go;
         return 1;
