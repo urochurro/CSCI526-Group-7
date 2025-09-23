@@ -1,1 +1,1 @@
-# CSCI570-Group-7
+# CSCI526-Group-7
