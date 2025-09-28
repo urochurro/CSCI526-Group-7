@@ -15,6 +15,20 @@ public class PlayerController : MonoBehaviour
         transform.position = GridManager.I.CellToWorldCenter(currentCell);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ghost"))
+        {
+            GameManager.I.OnPlayerCaught();
+            isMoving = false;
+            Debug.Log("Player is caught by ghost");
+        }
+        if(other.CompareTag("Collectible")){
+            CollectItem(other.gameObject);
+            Debug.Log("Player collected collectible");
+        }
+    }
+
     private void Update()
     {
         if (isMoving) return;
@@ -25,7 +39,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) dir = Vector2Int.left;
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) dir = Vector2Int.right;
         else return;
-
+        
         TryMove(dir);
     }
 
@@ -92,7 +106,6 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MoveToCell(Vector3Int dest)
     {
         isMoving = true;
-        GridManager.I.RemoveOccupant(currentCell);
         int success = GridManager.I.SetOccupant(dest, gameObject);
 
         Vector3 start = transform.position;
@@ -107,22 +120,10 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         transform.position = end;
+
         GridManager.I.RemoveOccupant(currentCell);
         currentCell = dest;
         isMoving = false;
-        if (success == 0)
-        {
-            GameManager.I.OnPlayerCaught();
-            isMoving = false;
-            yield break;
-        }
-
-        // Check for collectible
-        var occ = GridManager.I.GetOccupant(dest);
-        if (occ != null && occ.CompareTag("Collectible"))
-        {
-            CollectItem(occ);
-        }
     }
 
     private void CollectItem(GameObject collectible)

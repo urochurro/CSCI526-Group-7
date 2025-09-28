@@ -37,17 +37,17 @@ public class GridManager : MonoBehaviour
 
     public int SetOccupant(Vector3Int cell, GameObject go)
     {
-        if (go == null) { occupancy.Remove(cell); return 1; }
-        if (occupancy.ContainsKey(cell)){
-            if (occupancy[cell].CompareTag("Ghost") && go.CompareTag("Player")){
-                Debug.Log("Player ran into ghost");
-                return 0;
-            }
-            if (occupancy[cell].CompareTag("Player") && go.CompareTag("Ghost")){
-                Debug.Log("Ghost ran into player");
-                return 0;
-            }
-        }
+        // if (go == null) { occupancy.Remove(cell); return 1; }
+        // if (occupancy.ContainsKey(cell)){
+        //     if (occupancy[cell].CompareTag("Ghost") && go.CompareTag("Player")){
+        //         Debug.Log("Player ran into ghost");
+        //         return 0;
+        //     }
+        //     if (occupancy[cell].CompareTag("Player") && go.CompareTag("Ghost")){
+        //         Debug.Log("Ghost ran into player");
+        //         return 0;
+        //     }
+        // }
         occupancy[cell] = go;
         return 1;
     }

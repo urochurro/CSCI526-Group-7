@@ -169,11 +169,6 @@ public class GhostAI : MonoBehaviour
         transform.position = end;
         GridManager.I.RemoveOccupant(currentCell);
         currentCell = dest;
-        if (success == 0)
-        {   
-            GameManager.I.OnPlayerCaught();
-            yield break;
-        }
     }
 
 }
