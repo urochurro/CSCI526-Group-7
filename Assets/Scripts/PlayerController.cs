@@ -132,6 +132,7 @@ public class PlayerController : MonoBehaviour
         GridManager.I.RemoveOccupant(GridManager.I.WorldToCell(collectible.transform.position));
         Destroy(collectible);
 
-        GameManager.I.OnCollectiblePicked(); // optional, to track score
+        // Note: GameManager.I.OnCollectiblePicked() is called by Collectible.OnTriggerEnter2D
+        // so we don't need to call it here to avoid double counting
     }
 }

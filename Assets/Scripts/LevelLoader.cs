@@ -176,6 +176,7 @@ public class LevelLoader : MonoBehaviour
                         var col = Instantiate(collectiblePrefab, spawnPos, Quaternion.identity);
                         col.tag = "Collectible"; // tag it
                         GridManager.I.SetOccupant(cell, col);
+                        GameManager.I.RegisterCollectible(); // Register with GameManager
                         break;
                 }
             }

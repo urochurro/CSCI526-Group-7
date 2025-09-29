@@ -54,6 +54,17 @@ public class GameManager : MonoBehaviour
     {
         if (I != null && I != this) Destroy(gameObject);
         I = this;
+        
+        // Reset collectible counts when GameManager is created
+        ResetCollectibleCounts();
+    }
+    
+    // Reset collectible tracking (useful for level restarts)
+    public void ResetCollectibleCounts()
+    {
+        totalCollectibles = 0;
+        collectedCount = 0;
+        UpdateScoreboard();
     }
 
     #region Win Condition
@@ -77,8 +88,8 @@ public class GameManager : MonoBehaviour
         {
             gameEnded = true;
             Debug.Log("You solved the puzzle!");
-            // TODO: Show Win UI
             StopGame();
+            ShowEndScreen(true); // Show win screen
         }
     }
     #endregion
@@ -90,17 +101,22 @@ public class GameManager : MonoBehaviour
 
         gameEnded = true;
         Debug.Log("Game Over! Ghost caught the player!");
-        // TODO: Show Lose UI
         StopGame();
-        StartCoroutine(RestartLevel());
+        ShowEndScreen(false); // Show lose screen
     }
     #endregion
 
-    // Example: Restart level after 2 seconds
-    private IEnumerator RestartLevel()
+    // Show end screen UI
+    private void ShowEndScreen(bool playerWon)
     {
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (endScreenUI != null)
+        {
+            endScreenUI.ShowEndScreen(playerWon);
+        }
+        else
+        {
+            Debug.LogWarning("End screen UI not found! Make sure GameEndScreenUI is in the scene.");
+        }
     }
 
     private void StopGame()
@@ -127,11 +143,18 @@ public class GameManager : MonoBehaviour
     // Inside GameManager.cs
     private int totalCollectibles = 0;
     private int collectedCount = 0;
+    
+    // UI reference for scoreboard
+    private ScoreboardUI scoreboardUI;
+    
+    // UI reference for end screen
+    private GameEndScreenUI endScreenUI;
 
     // Call this when LevelLoader spawns a collectible
     public void RegisterCollectible()
     {
         totalCollectibles++;
+        UpdateScoreboard();
     }
 
     // Call this when player collects one
@@ -139,11 +162,44 @@ public class GameManager : MonoBehaviour
     {
         collectedCount++;
         Debug.Log($"Collected {collectedCount} / {totalCollectibles} items");
+        UpdateScoreboard();
 
         if (collectedCount >= totalCollectibles)
         {
             Debug.Log("All collectibles collected!");
             // Optionally, do something like show UI
+        }
+    }
+    
+    // Getter methods for UI
+    public int GetCollectedCount()
+    {
+        return collectedCount;
+    }
+    
+    public int GetTotalCollectibles()
+    {
+        return totalCollectibles;
+    }
+    
+    // Set UI reference
+    public void SetScoreboardUI(ScoreboardUI ui)
+    {
+        scoreboardUI = ui;
+    }
+    
+    // Set end screen UI reference
+    public void SetEndScreenUI(GameEndScreenUI ui)
+    {
+        endScreenUI = ui;
+    }
+    
+    // Update the scoreboard display
+    private void UpdateScoreboard()
+    {
+        if (scoreboardUI != null)
+        {
+            scoreboardUI.UpdateScoreDisplay();
         }
     }
 
