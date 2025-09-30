@@ -89,6 +89,8 @@ public class GhostAI : MonoBehaviour
 {
     public float stepDelay = 0.35f;
     public float moveSpeed = 6f;
+    public bool isDetonating = false;
+    public GameObject explosionPrefab;
 
     private Vector3Int currentCell;
     private Coroutine moveRoutine;
@@ -96,6 +98,12 @@ public class GhostAI : MonoBehaviour
     private enum State { Patrol, Chase, Trapped }
     private State state = State.Patrol;
 
+    public void detonate()
+    {
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+    
     private void Start()
     {
         currentCell = GridManager.I.WorldToCell(transform.position);
@@ -129,7 +137,7 @@ public class GhostAI : MonoBehaviour
                 if (path.Count > 0)
                 {
                     Vector3Int next = path[0];
-                    Debug.Log("Ghost is now " + state + " and moving to " + next[0] + "," + next[1] + "," + next[2]);
+                    //Debug.Log("Ghost is now " + state + " and moving to " + next[0] + "," + next[1] + "," + next[2]);
                     yield return MoveToCell(next);
                 }
             }

@@ -91,6 +91,8 @@ public class LevelLoader : MonoBehaviour
     public GameObject blockPrefab;
     public GameObject ghostPrefab;
     public GameObject collectiblePrefab; 
+    public GameObject wallPrefab;
+    public GameObject explosiveGhostPrefab;
 
     [Header("Tilemaps")]
     public Tilemap floorTilemap;
@@ -136,6 +138,7 @@ public class LevelLoader : MonoBehaviour
                     case 'P':
                     case 'B':
                     case 'G':
+                    case 'O':
                         floorTilemap.SetTile(cell, floorTile);
                         break;
                     case 'T':
@@ -163,6 +166,9 @@ public class LevelLoader : MonoBehaviour
 
                 switch (c)
                 {
+                    case '#':
+                        Instantiate(wallPrefab, spawnPos, Quaternion.identity);
+                        break;
                     case 'P':
                         Instantiate(playerPrefab, spawnPos, Quaternion.identity);
                         break;
@@ -171,6 +177,9 @@ public class LevelLoader : MonoBehaviour
                         break;
                     case 'G':
                         Instantiate(ghostPrefab, spawnPos, Quaternion.identity);
+                        break;
+                    case 'O':
+                        Instantiate(explosiveGhostPrefab, spawnPos, Quaternion.identity);
                         break;
                     case 'C': // collectible
                         var col = Instantiate(collectiblePrefab, spawnPos, Quaternion.identity);

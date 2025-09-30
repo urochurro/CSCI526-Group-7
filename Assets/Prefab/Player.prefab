@@ -162,3 +162,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
+  Bullet: {fileID: 5886079786613104746, guid: 33f1c1aef279dd544b93274daabb3798, type: 3}

@@ -1258,6 +1258,8 @@ MonoBehaviour:
   blockPrefab: {fileID: 2145005045244267620, guid: 09651bccb80b8234181da924823e5ea0, type: 3}
   ghostPrefab: {fileID: 8771637440006584632, guid: dd73980d1c0b31e469d2dc22dfee50e9, type: 3}
   collectiblePrefab: {fileID: 2485331227501172115, guid: 8b513a63b123793448fd13f35584d32c, type: 3}
+  wallPrefab: {fileID: 2861488323821071039, guid: ff75e34a1d309bf4bbc28f20495b1b5f, type: 3}
+  explosiveGhostPrefab: {fileID: 8771637440006584632, guid: 813451be473efda488177c8a433f68f3, type: 3}
   floorTilemap: {fileID: 1075383939}
   wallTilemap: {fileID: 1255955471}
   targetTilemap: {fileID: 981055912}

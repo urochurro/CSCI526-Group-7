@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 6f; // used for smoothing
+    public GameObject Bullet;
     private bool isMoving = false;
     private Vector3Int currentCell;
+    private int facingDir;
 
     private void Start()
     {
@@ -29,17 +31,53 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void ShootBullet()
+    {
+        Debug.Log("Player shot bullet: " + facingDir);
+        Instantiate(Bullet, transform.position + new Vector3(0, -0.1f, 0), Quaternion.identity);
+        switch (facingDir) {
+            case 0:
+                Bullet.GetComponent<BulletBehavior>().facingDir.x = 0;
+                Bullet.GetComponent<BulletBehavior>().facingDir.y = -1;
+                break;
+            case 1:
+                Bullet.GetComponent<BulletBehavior>().facingDir.x = 0;
+                Bullet.GetComponent<BulletBehavior>().facingDir.y = 1;
+                break;
+            case 2:
+                Bullet.GetComponent<BulletBehavior>().facingDir.x = 1;
+                Bullet.GetComponent<BulletBehavior>().facingDir.y = 0;
+                break;
+            case 3:
+                Bullet.GetComponent<BulletBehavior>().facingDir.x = -1;
+                Bullet.GetComponent<BulletBehavior>().facingDir.y = 0;
+                break;
+        }
+    }
+
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space)) ShootBullet();
         if (isMoving) return;
 
         Vector2Int dir = Vector2Int.zero;
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) dir = Vector2Int.up;
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) dir = Vector2Int.down;
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) dir = Vector2Int.left;
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) dir = Vector2Int.right;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            dir = Vector2Int.up;
+            facingDir = 0;
+        } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            dir = Vector2Int.down;
+            facingDir = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+            dir = Vector2Int.left;
+            facingDir = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            dir = Vector2Int.right;
+            facingDir = 3;
+        }
         else return;
-        
+
         TryMove(dir);
     }
 
